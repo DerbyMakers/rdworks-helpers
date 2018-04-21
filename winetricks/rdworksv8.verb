@@ -1,0 +1,22 @@
+w_metadata rdworksv8 apps \
+    title="RDWorksV8 8.01.26" \
+    publisher="RuiDa ACS" \
+    year="2017" \
+    media="download" \
+    file1="52571072a0e4a8cd21c0.rar" \
+    installed_file1="c:/rdworksv8/rdworksv8.exe" \
+    homepage="http://en.rd-acs.com"
+
+load_rdworksv8 ()
+{
+    # the installer needs cmd on at least ubuntu 17.09 and fedora 27
+    w_call cmd
+    # mfc42 is required. Some sources say it needs vcrun6 but it seems to run without.
+    w_call mfc42
+    
+    # the site is slow and sometimes has timeouts during download that cause this to fail. Might need to change to w_manual_download_to
+    w_download http://en.rd-acs.com/Private/Files/52571072a0e4a8cd21c0.rar c11c00e7f0a5d3e76053a59ff4f16a111bdc0d4e53f11c44548bd35b23b34d85
+    w_try_cd "$W_TMP"
+    w_try_unrar "${W_CACHE}/${W_PACKAGE}/${file1}"
+    w_try "$WINE" "./RDWorksV8Setup8.01.26-170927.exe"
+}
